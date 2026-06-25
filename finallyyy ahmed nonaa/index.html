@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dr. Ahmed & Dr. Haneen — Wedding Invitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Cinzel:wght@400;500;600&family=Amiri:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="light-mode" data-lang="en">
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- FLOATING PARTICLES CANVAS -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- GLOBAL EFFECTS LAYER — Butterflies + Sparkles (CSS-driven) -->
+  <!-- Lightweight, mobile-friendly, visible across the entire site -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- STARS LAYER — Subtle glowing background stars / light particles -->
+  <div id="stars-layer" class="stars-layer" aria-hidden="true"></div>
+
+  <div id="global-effects" class="global-effects" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- FX LAYER — Simple butterflies + sparkles -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div id="fx-layer" class="fx-layer" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- MUSIC PLAYER -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div id="music-btn" class="music-btn" onclick="toggleMusic()">
+    <span id="music-icon">♪</span>
+    <audio id="bg-music" loop>
+      <source src="music/main-theme.mp3" type="audio/mpeg" />
+    </audio>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- DARK MODE TOGGLE -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div id="theme-btn" class="theme-btn" onclick="toggleTheme()">
+    <span id="theme-icon">☽</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- ENVELOPE — FULL SCREEN ENTRY EXPERIENCE -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="envelope-screen" class="envelope-screen fullscreen">
+    <div class="envelope-bg">
+      <img src="images/bg.png" alt="" class="envelope-bg-img" />
+      <div class="envelope-bg-overlay"></div>
+    </div>
+    <div class="sunrays"></div>
+    <div class="floaters" id="envelope-floaters"></div>
+
+    <div class="envelope-wrap" id="envelope-wrap" onclick="openEnvelope()">
+      <div class="envelope-box">
+        <div class="envelope-back"></div>
+        <div class="envelope-flap"></div>
+        <div class="envelope-card">
+          <img src="images/logo_transparent.png" alt="Logo" class="envelope-logo" />
+          <p class="envelope-names">Dr. Ahmed &amp; Dr. Haneen</p>
+          <p class="envelope-hint" data-en="Tap to open" data-ar="اضغط للفتح"></p>
+        </div>
+        <div class="envelope-shadow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SECTION 1: LANGUAGE SELECTION INTRO -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="lang-screen" class="lang-screen fullscreen hidden-init">
+    <div class="lang-bg-image">
+      <img src="images/intro_new.png" alt="Intro" class="lang-bg-img" />
+      <div class="lang-overlay"></div>
+    </div>
+
+    <!-- Floating elements -->
+    <div class="floaters" id="lang-floaters"></div>
+    <div class="sunrays"></div>
+
+    <div class="lang-content">
+      <div class="lang-logo">
+        <div class="lang-ornament">✦</div>
+        <p class="lang-subtitle en-only" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;letter-spacing:0.25em;color:rgba(255,255,255,0.85);">You are cordially invited</p>
+        <p class="lang-subtitle ar-hidden" style="font-family:'Amiri',serif;font-size:1.2rem;color:rgba(255,255,255,0.85);display:none;">يُسعدنا دعوتكم</p>
+        <h1 class="lang-title">Dr. Ahmed<br/><span class="ampersand">&</span><br/>Dr. Haneen</h1>
+        <div class="lang-ornament">✦</div>
+      </div>
+
+      <p class="lang-prompt">Choose your language / اختر لغتك</p>
+
+      <div class="lang-buttons">
+        <button class="lang-btn" onclick="selectLang('en')">
+          <span class="lang-btn-label">English</span>
+          <span class="lang-btn-sub">Continue in English</span>
+        </button>
+        <button class="lang-btn rtl-btn" onclick="selectLang('ar')">
+          <span class="lang-btn-label">العربية</span>
+          <span class="lang-btn-sub">تابع بالعربية</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- MAIN SITE (hidden until lang selected) -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div id="main-site" class="main-site hidden">
+
+    <!-- ── SECTION 2: FULL SCREEN INTRO (children photo) ── -->
+    <section class="fullscreen slide-intro" id="slide-intro">
+      <div class="slide-img-wrap">
+        <img src="images/intro_new.png" alt="Childhood" class="slide-img parallax-img" />
+        <div class="slide-dark-overlay"></div>
+      </div>
+      <div class="slide-caption">
+        <div class="caption-ornament">✦ ✦ ✦</div>
+        <p class="caption-tagline" data-en="Where it all began..." data-ar="من هنا بدأ كل شيء..."></p>
+      </div>
+      <div class="scroll-hint">
+        <div class="scroll-chevron"></div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 3: HERO (couple in garden) ── -->
+    <section class="fullscreen slide-hero" id="slide-hero">
+      <div class="slide-img-wrap">
+        <img src="images/hero_new.png" alt="Wedding" class="slide-img parallax-img" />
+        <div class="slide-dark-overlay hero-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-eyebrow" data-en="A Wedding Invitation" data-ar="دعوة زفاف"></div>
+        <h1 class="hero-names">Dr. Ahmed<br/><em class="hero-amp">&</em><br/>Dr. Haneen</h1>
+        <div class="hero-date" data-en="Tuesday · 14 July 2026 · 7:00 PM" data-ar="الثلاثاء · ١٤ يوليو ٢٠٢٦ · ٧:٠٠ مساءً"></div>
+        <div class="hero-venue" data-en="Mountain Rose — One View Hall" data-ar="ماونتن روز — قاعة ون فيو"></div>
+      </div>
+      <div class="scroll-hint">
+        <div class="scroll-chevron"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ -->
+    <!-- BG WORLD (blurred swans photo) -->
+    <!-- ═══════════════════════════════ -->
+    <div id="bg-world">
+      <div class="bg-world-img">
+        <img src="images/bg.png" alt="bg" />
+      </div>
+      <div class="bg-world-overlay"></div>
+
+      <!-- ── SECTION 4 & 5: NAMES REVEAL + QUOTE ── -->
+      <section class="section names-section" id="names-section">
+        <div class="glass-card names-card">
+          <div class="names-ornament">✦</div>
+          <h2 class="names-reveal">
+            <span class="name-line">Dr. Ahmed</span>
+            <span class="name-amp">&</span>
+            <span class="name-line">Dr. Haneen</span>
+          </h2>
+          <div class="names-divider"></div>
+          <blockquote class="romantic-quote" data-en='"Every love story is beautiful,<br/>but ours is our favorite."' data-ar='"كل قصة حب جميلة،<br/>لكن قصتنا هي المفضلة لدينا."'></blockquote>
+        </div>
+      </section>
+
+      <!-- ── SECTION 6: LOVE STORY ── -->
+      <section class="section story-section" id="story-section">
+        <div class="section-header">
+          <div class="section-ornament">✦</div>
+          <h2 class="section-title" data-en="Our Story" data-ar="قصتنا"></h2>
+          <div class="section-ornament">✦</div>
+        </div>
+
+        <div class="story-timeline">
+          <div class="story-beat glass-card">
+            <div class="story-icon">🌱</div>
+            <h3 class="story-beat-title" data-en="The Beginning" data-ar="البداية"></h3>
+            <p class="story-beat-text" data-en="Two souls, one dream. Their paths crossed in the halls of medicine, where dedication and heart became their shared language." data-ar="روحان، حلم واحد. التقت طريقاهما في أروقة الطب، حيث أصبح التفاني والقلب لغتهما المشتركة."></p>
+          </div>
+
+          <div class="story-beat glass-card">
+            <div class="story-icon">💫</div>
+            <h3 class="story-beat-title" data-en="The Journey" data-ar="الرحلة"></h3>
+            <p class="story-beat-text" data-en="Side by side through every chapter — through celebrations, milestones, and quiet moments that turned into forever memories." data-ar="جنبًا إلى جنب في كل فصل — عبر الاحتفالات والإنجازات واللحظات الهادئة التي تحوّلت إلى ذكريات أبدية."></p>
+          </div>
+
+          <div class="story-beat glass-card">
+            <div class="story-icon">💍</div>
+            <h3 class="story-beat-title" data-en="Forever" data-ar="إلى الأبد"></h3>
+            <p class="story-beat-text" data-en="And now, they write the most beautiful chapter yet — a lifetime of love, laughter, and a home filled with grace." data-ar="والآن، يكتبان أجمل فصل على الإطلاق — عمرٌ من الحب والضحكات وبيت مليء بالنعمة."></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 7: SAVE THE DATE ── -->
+      <section class="section save-section" id="save-section">
+        <div class="glass-card save-card">
+          <p class="save-eyebrow" data-en="Save the Date" data-ar="احتفظ بالتاريخ"></p>
+          <div class="save-date-display">
+            <div class="save-col">
+              <span class="save-num">14</span>
+              <span class="save-label" data-en="July" data-ar="يوليو"></span>
+            </div>
+            <div class="save-divider-v"></div>
+            <div class="save-col">
+              <span class="save-num">2026</span>
+              <span class="save-label" data-en="Tuesday" data-ar="الثلاثاء"></span>
+            </div>
+            <div class="save-divider-v"></div>
+            <div class="save-col">
+              <span class="save-num">7<span style="font-size:0.5em">PM</span></span>
+              <span class="save-label" data-en="Evening" data-ar="مساءً"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 8: COUNTDOWN ── -->
+      <section class="section countdown-section" id="countdown-section">
+        <div class="section-header">
+          <div class="section-ornament">✦</div>
+          <h2 class="section-title" data-en="Counting Down to Forever" data-ar="العد التنازلي للأبدية"></h2>
+          <div class="section-ornament">✦</div>
+        </div>
+        <div class="countdown-grid">
+          <div class="countdown-unit glass-card">
+            <span class="countdown-num" id="cd-days">00</span>
+            <span class="countdown-label" data-en="Days" data-ar="أيام"></span>
+          </div>
+          <div class="countdown-unit glass-card">
+            <span class="countdown-num" id="cd-hours">00</span>
+            <span class="countdown-label" data-en="Hours" data-ar="ساعات"></span>
+          </div>
+          <div class="countdown-unit glass-card">
+            <span class="countdown-num" id="cd-mins">00</span>
+            <span class="countdown-label" data-en="Minutes" data-ar="دقائق"></span>
+          </div>
+          <div class="countdown-unit glass-card">
+            <span class="countdown-num" id="cd-secs">00</span>
+            <span class="countdown-label" data-en="Seconds" data-ar="ثواني"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 9: WEDDING DETAILS ── -->
+      <section class="section details-section" id="details-section">
+        <div class="section-header">
+          <div class="section-ornament">✦</div>
+          <h2 class="section-title" data-en="Wedding Details" data-ar="تفاصيل حفل الزفاف"></h2>
+          <div class="section-ornament">✦</div>
+        </div>
+        <div class="details-grid">
+          <div class="detail-card glass-card">
+            <div class="detail-icon">📅</div>
+            <h3 class="detail-label" data-en="Date" data-ar="التاريخ"></h3>
+            <p class="detail-value" data-en="Tuesday, 14 July 2026" data-ar="الثلاثاء، ١٤ يوليو ٢٠٢٦"></p>
+          </div>
+          <div class="detail-card glass-card">
+            <div class="detail-icon">🕖</div>
+            <h3 class="detail-label" data-en="Time" data-ar="التوقيت"></h3>
+            <p class="detail-value" data-en="7:00 PM" data-ar="٧:٠٠ مساءً"></p>
+          </div>
+          <div class="detail-card glass-card">
+            <div class="detail-icon">🌹</div>
+            <h3 class="detail-label" data-en="Venue" data-ar="المكان"></h3>
+            <p class="detail-value" data-en="Mountain Rose<br/>One View Hall" data-ar="ماونتن روز<br/>قاعة ون فيو"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 10: VENUE + MAP ── -->
+      <section class="section venue-section" id="venue-section">
+        <div class="glass-card venue-card">
+          <div class="venue-icon">🗺️</div>
+          <h2 class="venue-name">Mountain Rose</h2>
+          <p class="venue-sub" data-en="One View Hall" data-ar="قاعة ون فيو"></p>
+          <p class="venue-desc" data-en="An enchanting venue nestled among the hills, where every moment becomes a memory." data-ar="مكان ساحر يقع وسط التلال، حيث تتحول كل لحظة إلى ذكرى."></p>
+          <a href="https://maps.app.goo.gl/eSWEZQeWF7hj5AqE8?g_st=iw" target="_blank" class="map-btn">
+            <span data-en="View on Google Maps" data-ar="عرض على خرائط جوجل"></span>
+            <span class="map-arrow">→</span>
+          </a>
+        </div>
+      </section>
+
+    </div><!-- /bg-world -->
+
+    <!-- ── SECTION 11: GALLERY (MOMENTS) ── -->
+    <section class="section gallery-section" id="gallery-section">
+      <div class="gallery-bg">
+        <img src="images/bg.png" alt="bg" class="gallery-bg-img" />
+        <div class="gallery-bg-overlay"></div>
+      </div>
+      <div class="section-header">
+        <div class="section-ornament">✦</div>
+        <h2 class="section-title" data-en="Our Moments" data-ar="لحظاتنا"></h2>
+        <div class="section-ornament">✦</div>
+      </div>
+
+      <div class="gallery-layout">
+        <!-- Row 1: 2 cols -->
+        <div class="gallery-row row-2">
+          <div class="gallery-item">
+            <img src="images/moment1.png" alt="Moment 1" />
+            <div class="gallery-shimmer"></div>
+          </div>
+          <div class="gallery-item">
+            <img src="images/moment2.png" alt="Moment 2" />
+            <div class="gallery-shimmer"></div>
+          </div>
+        </div>
+        <!-- Row 2: 3 cols -->
+        <div class="gallery-row row-3">
+          <div class="gallery-item">
+            <img src="images/moment4.png" alt="Moment 3" />
+            <div class="gallery-shimmer"></div>
+          </div>
+          <div class="gallery-item">
+            <img src="images/moment3.png" alt="Moment 4" />
+            <div class="gallery-shimmer"></div>
+          </div>
+          <div class="gallery-item">
+            <img src="images/moment5.png" alt="Moment 5" />
+            <div class="gallery-shimmer"></div>
+          </div>
+        </div>
+        <!-- Row 3: 1 col centered -->
+        <div class="gallery-row row-1">
+          <div class="gallery-item">
+            <img src="images/moment6.png" alt="Moment 6" />
+            <div class="gallery-shimmer"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 12: RSVP ── -->
+    <section class="section rsvp-section" id="rsvp-section">
+      <div class="rsvp-bg">
+        <img src="images/bg.png" alt="bg" class="gallery-bg-img" />
+        <div class="gallery-bg-overlay"></div>
+      </div>
+      <div class="section-header">
+        <div class="section-ornament">✦</div>
+        <h2 class="section-title" data-en="RSVP" data-ar="تأكيد الحضور"></h2>
+        <p class="section-sub" data-en="We'd love to celebrate with you" data-ar="يسعدنا الاحتفال معكم"></p>
+        <div class="section-ornament">✦</div>
+      </div>
+
+      <div class="rsvp-form-wrap glass-card">
+        <div class="rsvp-field">
+          <label class="rsvp-label" data-en="Your Name" data-ar="اسمك"></label>
+          <input type="text" class="rsvp-input" id="rsvp-name" />
+        </div>
+        <div class="rsvp-field">
+          <label class="rsvp-label" data-en="Will you join us?" data-ar="هل ستنضم إلينا؟"></label>
+          <div class="rsvp-attendance-selector">
+            <button class="rsvp-attendance-btn accept-btn" id="btn-accept" onclick="selectRsvp(this,'yes')">
+              <div class="attendance-glow"></div>
+              <div class="attendance-particles" id="accept-particles"></div>
+              <div class="attendance-inner">
+                <span class="attendance-icon">🌸</span>
+                <span class="attendance-title" data-en="Accept" data-ar="قبول"></span>
+                <span class="attendance-subtitle" data-en="With you in the moment" data-ar="معكم في اللحظة"></span>
+              </div>
+              <div class="attendance-shimmer"></div>
+            </button>
+            <div class="attendance-or">
+              <span class="attendance-or-line"></span>
+              <span class="attendance-or-text">or</span>
+              <span class="attendance-or-line"></span>
+            </div>
+            <button class="rsvp-attendance-btn decline-btn" id="btn-decline" onclick="selectRsvp(this,'no')">
+              <div class="attendance-glow"></div>
+              <div class="attendance-inner">
+                <span class="attendance-icon">🕊️</span>
+                <span class="attendance-title" data-en="Decline" data-ar="اعتذار"></span>
+                <span class="attendance-subtitle" data-en="With you in spirit" data-ar="معكم بالروح"></span>
+              </div>
+              <div class="attendance-shimmer"></div>
+            </button>
+          </div>
+        </div>
+        <div class="rsvp-field">
+          <label class="rsvp-label" data-en="Leave a message" data-ar="اترك رسالة"></label>
+          <textarea class="rsvp-input rsvp-textarea" id="rsvp-msg" rows="4"></textarea>
+        </div>
+        <button class="rsvp-submit" onclick="submitRsvp()">
+          <span data-en="Send with Love ✦" data-ar="أرسل بكل محبة ✦"></span>
+        </button>
+        <div id="rsvp-thanks" class="rsvp-thanks hidden" data-en="Thank you! We can't wait to celebrate with you. 💫" data-ar="شكرًا لك! لا يسعنا الانتظار للاحتفال معك. 💫"></div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 13: FINAL ENDING SCENE ── -->
+    <section class="fullscreen final-section" id="final-section">
+      <div class="slide-img-wrap">
+        <img src="images/hero_new.png" alt="Final" class="slide-img parallax-img" />
+        <div class="slide-dark-overlay final-overlay"></div>
+      </div>
+      <div class="final-content">
+        <div class="final-floaters" id="final-floaters"></div>
+        <div class="final-sunrays"></div>
+        <div class="final-ornament">✦ ✦ ✦</div>
+        <p class="final-tagline" data-en="Forever Begins Here" data-ar="هنا تبدأ الأبدية"></p>
+        <h1 class="final-names">Dr. Ahmed<br/><span class="final-amp">&</span><br/>Dr. Haneen</h1>
+        <div class="final-divider"></div>
+        <p class="final-venue" data-en="Mountain Rose — One View Hall" data-ar="ماونتن روز — قاعة ون فيو"></p>
+        <p class="final-date" data-en="Tuesday, 14 July 2026 · 7:00 PM" data-ar="الثلاثاء، ١٤ يوليو ٢٠٢٦ · ٧:٠٠ مساءً"></p>
+        <div class="final-ornament" style="margin-top:2rem;">✦ ✦ ✦</div>
+      </div>
+    </section>
+
+  </div><!-- /main-site -->
+
+  <script src="script.js"></script>
+</body>
+</html>
